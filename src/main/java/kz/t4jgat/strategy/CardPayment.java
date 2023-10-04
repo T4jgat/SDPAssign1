@@ -1,12 +1,17 @@
 package kz.t4jgat.strategy;
 
-public class CardPayment implements PaymentStrategy{
-    private String cardNumber;
-    private String name;
+import kz.t4jgat.singleton.DAO.PersonDB;
+import kz.t4jgat.singleton.Models.Person;
 
-    public CardPayment(String cardNumber, String name) {
+import java.math.BigInteger;
+
+public class CardPayment implements PaymentStrategy{
+    PersonDB personDB = PersonDB.getInstance();
+    PaymentProcessor paymentProcessor;
+    private String cardNumber;
+
+    public CardPayment(String cardNumber) {
         this.cardNumber = cardNumber;
-        this.name = name;
     }
 
     @Override

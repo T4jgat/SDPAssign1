@@ -1,9 +1,14 @@
 package kz.t4jgat.strategy;
 
-public class QRPayment implements PaymentStrategy{
-    private String bankAccountId;
+import kz.t4jgat.singleton.DAO.PersonDB;
 
-    public QRPayment(String bankAccountId) {
+public class QRPayment implements PaymentStrategy{
+    PersonDB personDAO = PersonDB.getInstance();
+
+    private int bankAccountId;
+
+    public QRPayment(int bankAccountId) {
+        this.personDAO.saveByQR(bankAccountId);
         this.bankAccountId = bankAccountId;
     }
 
