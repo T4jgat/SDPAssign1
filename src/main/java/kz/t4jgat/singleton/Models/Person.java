@@ -1,22 +1,45 @@
 package kz.t4jgat.singleton.Models;
 
+import java.math.BigInteger;
+
 public class Person {
-    private int id;
+    private int bankAccoutntId;
+    private String cardNumber;
+
     private String name;
 
-    public Person() {}
-
-    public Person(int id, String name){
-        this.id = id;
+    public Person(int bankAccoutntId, String cardNumber, String name) {
+        this.bankAccoutntId = bankAccoutntId;
+        this.cardNumber = cardNumber;
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public Person(int bankAccoutntId, String name) {
+        this.name = name;
+        this.cardNumber = null;
+        this.bankAccoutntId = bankAccoutntId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Person(String cardNumber, String name) {
+        this.cardNumber = cardNumber;
+        this.name = name;
+        this.bankAccoutntId = 0;
+    }
+
+    public int getBankAccoutntId() {
+        return bankAccoutntId;
+    }
+
+    public void setBankAccoutntId(int bankAccoutntId) {
+        this.bankAccoutntId = bankAccoutntId;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     public String getName() {
@@ -25,13 +48,5 @@ public class Person {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 }

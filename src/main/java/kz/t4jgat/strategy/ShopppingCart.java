@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
+import kz.t4jgat.singleton.DAO.PersonDB;
 import kz.t4jgat.strategy.Product;
 
 public class ShopppingCart {
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
     private List<Product> products = new ArrayList<>();
+    private PersonDB personDB = PersonDB.getInstance();
     private PaymentProcessor paymentProcessor;
 
     public ShopppingCart(PaymentProcessor paymentProcessor) {
@@ -27,42 +29,46 @@ public class ShopppingCart {
     private double calculatingTotalPrice() {
         double generalSum = 0, qtySum;
         for (int i = 0; i < products.size(); i++) {
-             qtySum = products.get(i).getPrice() * products.get(i).getQuantity();
-             generalSum = generalSum + qtySum;
+            qtySum = products.get(i).getPrice() * products.get(i).getQuantity();
+            generalSum = generalSum + qtySum;
         }
         return generalSum;
-     }
+    }
 
-     private void viewContent() {
-         Product product;
-         int count = 0;
-         System.out.println("\n--------------Shopping cart--------------");
-         for (int i = 0; i < products.size(); i++) {
-             product = products.get(i);
-             System.out.println(++count + "\t"+product.getName()+"\t$"+product.getPrice()+"\t"+product.getQuantity()+"pc.");
-         }
+    private void viewContent() {
+        Product product;
+        int count = 0;
+        System.out.println("\n--------------Shopping cart--------------");
+        for (int i = 0; i < products.size(); i++) {
+            product = products.get(i);
+            System.out.println(
+                    ++count + "\t" + product.getName() + "\t$" + product.getPrice() + "\t" + product.getQuantity() + "pc."
+            );
+        }
 
-         System.out.println("-----------------------------------------");
-         System.out.println("Total price: $"+ df.format(calculatingTotalPrice()));
-         System.out.println("-----------------------------------------");
-     }
+        System.out.println("-----------------------------------------");
+        System.out.println("Total price: $" + df.format(calculatingTotalPrice()));
+        System.out.println("-----------------------------------------");
+    }
 
     public void shoppingProcess() {
         Scanner sc = new Scanner(System.in).useLocale(Locale.US);
         String productName;
         double price;
-        int qty;
-        String action = "-", name, cardNumber, bankAccountId;
+        int qty, bankAccountId;
+        String action = "-", name, cardNumber;
 
         while (!action.equals("e")) {
             System.out.print("""
-                \n[1] Add product
-                [2] View the cart's content
-                [3] Calculating total price
-                [4] Choose payment strategy
-                [5] Complete the checkout
-                [e] Exit
-                >>\s""");
+                    \n[1] Add product
+                    [2] View the cart's content
+                    [3] Calculating total price
+                    [4] Choose payment strategy
+                    [5] Complete the checkout
+                    [e] Exit
+                    --------Admin options--------
+                    [6] Show People
+                    >>\s""");
 
             action = sc.next();
             switch (action) {
@@ -81,7 +87,7 @@ public class ShopppingCart {
                     System.out.print("""
                             \nChoose your payment strategy:
                             [1] Card
-                            [2] Cash
+                            [2] QR
                             >>\s
                             """);
                     int selectedStrategy = sc.nextInt();
@@ -93,8 +99,10 @@ public class ShopppingCart {
                         paymentProcessor.setPaymentStrategy(new CardPayment(cardNumber, name));
                     } else {
                         System.out.print("Your bank account ID: ");
-                        bankAccountId = sc.next();
-                        paymentProcessor.setPaymentStrategy(new QRPayment(bankAccountId));
+                        bankAccountId = sc.nextInt();
+                        System.out.print("Your name: ");
+                        name = sc.next();
+                        paymentProcessor.setPaymentStrategy(new QRPayment(bankAccountId, name));
                     }
                     System.out.println("\n====Your payment method set!====");
                 }
@@ -102,6 +110,10 @@ public class ShopppingCart {
                     double totalPrice = calculatingTotalPrice();
                     paymentProcessor.executePayment(totalPrice);
                     System.out.println("Payment in the amount of $" + totalPrice + " has been completed!");
+                }
+                case "6" -> {
+                    personDB.showPeople();
+                    break;
                 }
                 case "e" -> System.out.println("exit...");
                 default -> System.out.println("\nUnexpected value!");
