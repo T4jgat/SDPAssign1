@@ -1,6 +1,6 @@
-package kz.t4jgat;
+package kz.t4jgat.singleton;
 
-import kz.t4jgat.DAO.PersonDB;
+import kz.t4jgat.singleton.DAO.PersonDB;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package kz.t4jgat.Models;
+package kz.t4jgat.singleton.Models;
 
 public class Person {
     private int id;
