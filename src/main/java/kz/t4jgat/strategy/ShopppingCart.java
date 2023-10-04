@@ -1,12 +1,17 @@
 package kz.t4jgat.strategy;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 import kz.t4jgat.strategy.Product;
 
 public class ShopppingCart {
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
     private List<Product> products = new ArrayList<>();
     private PaymentProcessor paymentProcessor;
 
@@ -16,7 +21,7 @@ public class ShopppingCart {
 
     private void addProduct(String name, double price, int quantity) {
         products.add(new Product(name, price, quantity));
-        System.out.println("Product (" + name + ") added!");
+        System.out.println("\n======Product (" + name + ") added!======");
     }
 
     private double calculatingTotalPrice() {
@@ -36,11 +41,14 @@ public class ShopppingCart {
              product = products.get(i);
              System.out.println(++count + "\t"+product.getName()+"\t$"+product.getPrice()+"\t"+product.getQuantity()+"pc.");
          }
+
+         System.out.println("-----------------------------------------");
+         System.out.println("Total price: $"+ df.format(calculatingTotalPrice()));
          System.out.println("-----------------------------------------");
      }
 
     public void shoppingProcess() {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in).useLocale(Locale.US);
         String productName;
         double price;
         int qty;
@@ -58,7 +66,7 @@ public class ShopppingCart {
 
             action = sc.next();
             switch (action) {
-                case "1":
+                case "1" -> {
                     System.out.print("\nProduct name: ");
                     productName = sc.next();
                     System.out.print("Product price: ");
@@ -66,16 +74,12 @@ public class ShopppingCart {
                     System.out.print("Product quantity: ");
                     qty = sc.nextInt();
                     this.addProduct(productName, price, qty);
-                    break;
-                case "2":
-                    this.viewContent();
-                    break;
-                case "3":
-                    System.out.println("Total price: $" + this.calculatingTotalPrice());
-                    break;
-                case "4":
+                }
+                case "2" -> this.viewContent();
+                case "3" -> System.out.println("Total price: $" + this.calculatingTotalPrice());
+                case "4" -> {
                     System.out.print("""
-                            Choose your payment strategy:
+                            \nChoose your payment strategy:
                             [1] Card
                             [2] Cash
                             >>\s
@@ -87,23 +91,20 @@ public class ShopppingCart {
                         System.out.print("Your name: ");
                         name = sc.next();
                         paymentProcessor.setPaymentStrategy(new CardPayment(cardNumber, name));
-                        System.out.println("Your payment method set!");
                     } else {
                         System.out.print("Your bank account ID: ");
                         bankAccountId = sc.next();
                         paymentProcessor.setPaymentStrategy(new QRPayment(bankAccountId));
-                        System.out.println("Your payment method set!");
                     }
-                    break;
-                case "5":
+                    System.out.println("\n====Your payment method set!====");
+                }
+                case "5" -> {
                     double totalPrice = calculatingTotalPrice();
                     paymentProcessor.executePayment(totalPrice);
-                    System.out.println("Payment in the amount of $"+ totalPrice +" has been completed!");
-                    break;
-                case "e":
-                    System.out.println("exit...");
-                default:
-                    System.out.println("\nUnexpected value!");
+                    System.out.println("Payment in the amount of $" + totalPrice + " has been completed!");
+                }
+                case "e" -> System.out.println("exit...");
+                default -> System.out.println("\nUnexpected value!");
             }
         }
     }
