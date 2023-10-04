@@ -14,15 +14,15 @@ public class Person {
         this.name = name;
     }
 
-    public Person(int bankAccoutntId) {
-        this.name = null;
+    public Person(int bankAccoutntId, String name) {
+        this.name = name;
         this.cardNumber = null;
         this.bankAccoutntId = bankAccoutntId;
     }
 
-    public Person(String cardNumber) {
+    public Person(String cardNumber, String name) {
         this.cardNumber = cardNumber;
-        this.name = null;
+        this.name = name;
         this.bankAccoutntId = 0;
     }
 

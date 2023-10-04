@@ -66,6 +66,8 @@ public class ShopppingCart {
                     [4] Choose payment strategy
                     [5] Complete the checkout
                     [e] Exit
+                    --------Admin options--------
+                    [6] Show People
                     >>\s""");
 
             action = sc.next();
@@ -85,7 +87,7 @@ public class ShopppingCart {
                     System.out.print("""
                             \nChoose your payment strategy:
                             [1] Card
-                            [2] Cash
+                            [2] QR
                             >>\s
                             """);
                     int selectedStrategy = sc.nextInt();
@@ -94,11 +96,13 @@ public class ShopppingCart {
                         cardNumber = sc.next();
                         System.out.print("Your name: ");
                         name = sc.next();
-                        paymentProcessor.setPaymentStrategy(new CardPayment(cardNumber));
+                        paymentProcessor.setPaymentStrategy(new CardPayment(cardNumber, name));
                     } else {
                         System.out.print("Your bank account ID: ");
                         bankAccountId = sc.nextInt();
-                        paymentProcessor.setPaymentStrategy(new QRPayment(bankAccountId));
+                        System.out.print("Your name: ");
+                        name = sc.next();
+                        paymentProcessor.setPaymentStrategy(new QRPayment(bankAccountId, name));
                     }
                     System.out.println("\n====Your payment method set!====");
                 }
@@ -108,7 +112,8 @@ public class ShopppingCart {
                     System.out.println("Payment in the amount of $" + totalPrice + " has been completed!");
                 }
                 case "6" -> {
-
+                    personDB.showPeople();
+                    break;
                 }
                 case "e" -> System.out.println("exit...");
                 default -> System.out.println("\nUnexpected value!");

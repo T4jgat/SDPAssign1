@@ -10,7 +10,8 @@ public class CardPayment implements PaymentStrategy{
     PaymentProcessor paymentProcessor;
     private String cardNumber;
 
-    public CardPayment(String cardNumber) {
+    public CardPayment(String cardNumber, String name) {
+        this.personDB.saveByCard(cardNumber, name);
         this.cardNumber = cardNumber;
     }
 

@@ -7,8 +7,8 @@ public class QRPayment implements PaymentStrategy{
 
     private int bankAccountId;
 
-    public QRPayment(int bankAccountId) {
-        this.personDAO.saveByQR(bankAccountId);
+    public QRPayment(int bankAccountId, String name) {
+        this.personDAO.saveByQR(bankAccountId, name);
         this.bankAccountId = bankAccountId;
     }
 

@@ -17,15 +17,20 @@ public class PersonDB {
         people = new ArrayList<>();
     }
 
-    public String show() {
-
+    public void showPeople() {
+        System.out.println("Name\tBank_Account_ID\t Card_number");
+        System.out.println("------------------------------------");
+        for (int i = 0; i < people.size(); i++){
+            Person person = people.get(i);
+            System.out.println(person.getName() + "\t" + person.getBankAccoutntId() + "\t\t\t\t " + person.getCardNumber());
+        }
     }
 
-    public void saveByCard(String cardNumber) {
-        instance.people.add(new Person(cardNumber));
+    public void saveByCard(String cardNumber, String name) {
+        instance.people.add(new Person(cardNumber, name));
     }
-    public void saveByQR(int bankAccountId) {
-        instance.people.add(new Person(bankAccountId));
+    public void saveByQR(int bankAccountId, String name) {
+        instance.people.add(new Person(bankAccountId, name));
     }
 
     public static PersonDB getInstance() {
