@@ -1,10 +1,11 @@
-package kz.t4jgat.DAO;
+package kz.t4jgat.singleton.DAO;
 
-import kz.t4jgat.Models.Person;
+import kz.t4jgat.singleton.Models.Person;
 
 import java.util.ArrayList;
 import java.util.List;
 
+// Singleton class
 public class PersonDB {
     private static volatile PersonDB instance;
     private static Object mutex = new Object();
