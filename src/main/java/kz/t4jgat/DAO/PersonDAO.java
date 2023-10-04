@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersonDAO {
+
     private static int PEOPLE_COUNT;
     private List<Person> people;
+    private static volatile PersonDAO instance;
+    private static Object mutex = new Object();
+
 
     {
         people = new ArrayList<>();
@@ -19,5 +23,15 @@ public class PersonDAO {
         people.add(new Person(++PEOPLE_COUNT, "Eliot"));
     }
 
-
+    public static PersonDAO getInstance() {
+            PersonDAO result = instance;
+            if (result == null) {
+                synchronized (mutex) {
+                    result = instance;
+                    if (result == null)
+                        instance = result = new PersonDAO();
+                }
+            }
+            return result;
+    }
 }
